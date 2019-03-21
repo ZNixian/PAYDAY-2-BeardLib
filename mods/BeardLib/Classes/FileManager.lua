@@ -89,11 +89,17 @@ function fm:AddFile(ext, path, file)
 		return
 	end
 
+	local extra
+	if ext == Idstring("sequence_manager") or ext == Idstring("font") then
+			extra = { recode_scriptdata=true }
+	end
+	log(tostring(ext) .. " " .. tostring(extra))
+
 	ext = ext:id()
 	path = path:id()
 	local k_ext = ext:key()
 	local loaded
-    DB:create_entry(ext, path, file)
+    DB:create_entry(ext, path, file, extra)
     Global.fm.added_files[k_ext] = Global.fm.added_files[k_ext] or {}
 	Global.fm.added_files[k_ext][path:key()] = file
 	if k_ext == texture_key then
